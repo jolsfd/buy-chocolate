@@ -1,4 +1,4 @@
-# Buy chocolate
+# Buy chocolate 🍫
 
 ## Requirements
 
