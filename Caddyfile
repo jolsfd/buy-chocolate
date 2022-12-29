@@ -1,5 +1,7 @@
 localhost {
-    reverse_proxy 127.0.0.1:5173
+    root * ./frontend/dist
+    encode zstd gzip
+    fileserver
 }
 
 api.localhost {
