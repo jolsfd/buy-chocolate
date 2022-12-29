@@ -14,7 +14,7 @@ You need to install:
 
 ## Deploy
 
-To deploy the singe page application run:
+To deploy the single page application run:
 ```
 cd ./frontend
 npm install
@@ -42,3 +42,10 @@ sudo caddy run
 
 * Create admin account ```http://127.0.0.1:8090/_/```
 * Import collections ```pb_schema.json```
+
+## Deploying on a VPS
+
+Installed and running services:
+* ```ufw``` (ssh, http, https)
+* ```fail2ban```
+* ```docker```
