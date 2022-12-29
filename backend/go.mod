@@ -1,4 +1,4 @@
-module example.com/choco
+module github.com/jolsfd/buy-chocolate
 
 go 1.19
 
