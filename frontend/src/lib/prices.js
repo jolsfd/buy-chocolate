@@ -1,0 +1,1 @@
+export const prices = ["2€","2,5€"]
