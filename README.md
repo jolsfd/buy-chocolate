@@ -1,10 +1,23 @@
 # Buy chocolate
 
+## Requirements
+
+You need to install:
+* ```npm```
+* ```caddy```
+* ```docker```
+
+## Environment variables
+
+* Insert secret key in ```main.go```
+* Insert origin and site key in ```.env```
+
 ## Deploy
 
 To deploy the singe page application run:
 ```
 cd ./frontend
+npm install
 npm run build
 ```
 
@@ -17,10 +30,15 @@ docker build . -t pocketbase
 And to run it in production:
 
 ```
-docker run -p 127.0.0.1:8090:8090 -v /var/buy-chocolate:/pocketbase/pb_data pocketbase
+docker run -d -p 127.0.0.1:8090:8090 -v /var/buy-chocolate:/pocketbase/pb_data pocketbase
 ```
 
 Finally start the reverse proxy with caddy-server:
 ```
 sudo caddy run
 ```
+
+## Setup
+
+* Create admin account ```http://127.0.0.1:8090/_/```
+* Import collections ```pb_schema.json```
