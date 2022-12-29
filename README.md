@@ -17,7 +17,7 @@ docker build . -t pocketbase
 And to run it in production:
 
 ```
-docker run -p 127.0.0.1:8090:8090 -v /var/buy-chocolate:/pocketbase pocketbase
+docker run -p 127.0.0.1:8090:8090 -v /var/buy-chocolate:/pocketbase/pb_data pocketbase
 ```
 
 Finally start the reverse proxy with caddy-server:
