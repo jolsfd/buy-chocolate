@@ -1,7 +1,8 @@
-localhost {
+localhost/* {
+    try_files {path} /
     root * ./frontend/dist
     encode zstd gzip
-    fileserver
+    file_server
 }
 
 api.localhost {
