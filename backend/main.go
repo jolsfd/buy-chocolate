@@ -14,7 +14,7 @@ import (
 	"github.com/pocketbase/pocketbase/tools/hook"
 )
 
-const secret = "INSERT_YOUR_KEY"
+const secret = "1x0000000000000000000000000000000AA" // test key
 
 type turnstileResponse struct {
 	Success     bool     `json:"success"`
