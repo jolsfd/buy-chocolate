@@ -21,6 +21,16 @@ npm install
 npm run build
 ```
 
+Or if you want to use docker instead:
+```
+cd ./frontend
+docker build -t vite
+
+# get the container name
+docker ps --all
+docker cp CONTAINER_NAME:/vite/dist ./dist
+```
+
 To build the docker image:
 ```
 cd ./backend
