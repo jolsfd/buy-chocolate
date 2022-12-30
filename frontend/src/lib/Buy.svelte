@@ -55,7 +55,7 @@
   }
 
   async function human() {
-    err = "Bist du ein Mensch?";
+    err = "Bist du ein Mensch? Seite neu laden!";
     console.log("Not a human 🤖");
   }
 
@@ -72,10 +72,12 @@
     err = null;
   }
 
-  async function updateToken(token) {
-    cfStore.update(token);
+  function updateToken(e) {
+    const token = e.detail.token
+    cfStore.update(old => token);
     console.log("New turnstile token 💾");
   }
+
 </script>
 
 <main>
@@ -231,14 +233,14 @@
           <hr class="my-4" />
 
           <Turnstile
-            siteKey={import.meta.env.VITE_SITE_KEY}
+            siteKey="1x00000000000000000000AA"
             action="order"
             on:turnstile-callback={updateToken}
             on:turnstile-error={human}
             on:turnstile-timeout={human}
             on:turnstile-expired={human}
           />
-
+          
           <button
             class="w-100 btn btn-success btn-lg"
             type="submit"
