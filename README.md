@@ -24,11 +24,15 @@ npm run build
 Or if you want to use docker instead:
 ```
 cd ./frontend
-docker build -t vite
+docker build . -t vite
+docker run -t vite
 
 # get the container name
 docker ps --all
 docker cp CONTAINER_NAME:/vite/dist ./dist
+
+docker stop CONTAINER_NAME
+docker rm CONTAINER_NAME
 ```
 
 To build the docker image:
@@ -59,3 +63,13 @@ Installed and running services:
 * ```ufw``` (ssh, http, https)
 * ```fail2ban```
 * ```docker```
+
+Change config in ```/etc/caddy/Caddyfile```:
+**Make sure you change the path before ```/home/USER/buy-chocolate/frontend/dist/```**
+```
+sudo systemctl restart caddy
+```
+
+## Partial shutdown
+
+To block create requests change to api rule in the admin dashboard to "Block evrything"
