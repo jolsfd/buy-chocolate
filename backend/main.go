@@ -17,10 +17,12 @@ import (
 const secret = "INSERT_YOUR_KEY"
 
 type turnstileResponse struct {
-	Success     bool   `json:"success"`
-	ChallengeTs string `json:"challenge_ts"`
-	Hostname    string `json:"hostname"`
-	CData       string `json:"cdata"`
+	Success     bool     `json:"success"`
+	ChallengeTs string   `json:"challenge_ts"`
+	Hostname    string   `json:"hostname"`
+	ErrorCodes  []string `json:"error-codes"`
+	Action      string   `json:"action"`
+	CData       string   `json:"cdata"`
 }
 
 type tokenResponse struct {
@@ -39,13 +41,10 @@ func validateToken(e *core.RecordCreateEvent) error {
 	// docs: https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
 	// log.Println(res.Token)
 
-	// create request
-	formData := url.Values{}
-	formData.Add("secret", secret)
-	formData.Add("response", res.Token)
+	values := url.Values{"secret": {secret}, "response": {res.Token}}
 
 	// verify at cloudflare
-	resCf, err := http.PostForm("https://challenges.cloudflare.com/turnstile/v0/siteverify", formData)
+	resCf, err := http.PostForm("https://challenges.cloudflare.com/turnstile/v0/siteverify", values)
 	if err != nil {
 		return hook.StopPropagation
 	}
@@ -110,7 +109,7 @@ func main() {
 
 		last := 0
 		if len(records) == 0 {
-			last = 1
+			last = 0
 		} else {
 			last = records[0].GetInt("nummer")
 		}
