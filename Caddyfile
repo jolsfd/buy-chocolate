@@ -1,6 +1,6 @@
 localhost/* {
     try_files {path} /
-    root * ./frontend/dist
+    root * ./buy-chocolate/frontend/dist
     encode zstd gzip
     file_server
 }
