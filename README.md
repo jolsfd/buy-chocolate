@@ -1,5 +1,13 @@
 # Buy chocolate 🍫
 
+## TODO
+
+* no error message when new turnstile token
+* help
+* legal
+* replace text placeholders
+* delete users collections or block evrything
+
 ## Requirements
 
 You need to install:
