@@ -120,7 +120,7 @@ func main() {
 		e.Record.Set("nummer", new)
 
 		// set paid status to false
-		e.Record.Set("paid", false)
+		e.Record.Set("bezahlt", false)
 
 		return nil
 	})

@@ -2,11 +2,9 @@
 
 ## TODO
 
-* no error message when new turnstile token
 * help
 * legal
 * replace text placeholders
-* delete users collections or block evrything
 
 ## Requirements
 
@@ -80,4 +78,4 @@ sudo systemctl restart caddy
 
 ## Partial shutdown
 
-To block create requests change to api rule in the admin dashboard to "Block evrything"
+To block create requests change to api rule in the admin dashboard to "Block everything"

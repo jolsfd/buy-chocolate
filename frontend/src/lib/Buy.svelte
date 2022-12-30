@@ -11,7 +11,7 @@
   let sender = "";
   let receiver = "";
   let schoolclass = "";
-  let message = "";
+  let nachricht = "";
 
   function validate() {
     console.log("Validation ✅");
@@ -33,10 +33,10 @@
     const data = {
       absender: sender,
       empfaenger: receiver,
-      message: message,
+      nachricht: nachricht,
       klasse: schoolclass,
       nummer: -1,
-      paid: false,
+      bezahlt: false,
     };
 
     const record = await pb
@@ -67,7 +67,7 @@
     sender = "";
     receiver = "";
     schoolclass = "";
-    message = "";
+    nachricht = "";
 
     err = null;
   }
@@ -133,13 +133,13 @@
               <span class="text-muted">Klasse:</span>
               {details.klasse}
             </li>
-            {#if details.message}
+            {#if details.nachricht}
               <li class="list-group-item">
                 <span class="text-muted">Nachricht:</span>
-                {details.message}
+                {details.nachricht}
               </li>
             {/if}
-            {#if details.message}
+            {#if details.nachricht}
               <li class="list-group-item">
                 <span class="text-muted">Preis:</span>
                 {prices[1]}
@@ -218,7 +218,7 @@
                 class="form-control"
                 rows="3"
                 placeholder="Hallo, ..."
-                bind:value={message}
+                bind:value={nachricht}
               />
             </div>
 
@@ -237,7 +237,6 @@
             action="order"
             on:turnstile-callback={updateToken}
             on:turnstile-error={human}
-            on:turnstile-timeout={human}
             on:turnstile-expired={human}
           />
           

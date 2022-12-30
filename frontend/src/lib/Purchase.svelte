@@ -28,9 +28,9 @@
     const data = {
       absender: currentRecord.absender,
       empfaenger: currentRecord.empfaenger,
-      message: currentRecord.message,
+      nachricht: currentRecord.nachricht,
       klasse: currentRecord.klasse,
-      paid: true,
+      bezahlt: true,
     };
 
     const record = await pb.collection("chocolate").update(currentRecord.id, data).catch((error) => {
@@ -99,7 +99,7 @@
                   class="form-control"
                   rows="3"
                   placeholder="Hallo, ..."
-                  bind:value={currentRecord.message}
+                  bind:value={currentRecord.nachricht}
                 />
               </li>
 
@@ -117,7 +117,7 @@
 
               <li class="list-group-item">
                 <span class="text-muted">Preis:</span>
-                {#if currentRecord.paid}
+                {#if currentRecord.bezahlt}
                   <span class="text-danger">Bereits bezahlt!</span>
                 {:else}
                   <span class="text-success">
