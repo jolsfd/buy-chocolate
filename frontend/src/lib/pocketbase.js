@@ -33,5 +33,5 @@ pb.beforeSend = function(url, reqConfig){
 
         //console.log(reqConfig.body)
     }
-    return reqConfig
+    return { url, reqConfig };
 }
