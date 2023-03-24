@@ -10,9 +10,17 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  /* text-align: left; */
 }
 
 .btn:hover{
     filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+#legal {
+  text-align: left;
+}
+
+#main {
+  text-align: center;
 }

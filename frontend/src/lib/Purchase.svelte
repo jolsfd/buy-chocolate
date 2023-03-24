@@ -2,6 +2,7 @@
   import { pb } from "./pocketbase";
   import Select from "./Select.svelte";
   import {prices } from "./prices.js";
+  import Error from "./Error.svelte";
 
   let success;
 
@@ -18,7 +19,7 @@
     //     err = "Inkorrekte ID!";
     //   });
     const record = await pb.collection("chocolate").getFirstListItem(`nummer=${num}`).catch((error) => {
-      err = "Inkorrekte ID!";
+      err = "Inkorrekte Nummer!";
     })
     currentRecord = record;
     console.log("View",num,"💻");
@@ -54,11 +55,7 @@
 <main>
   <div class="d-flex align-items-center justify-content-center">
     <div class="col-md-7 col-lg-8">
-      {#if err}
-        <div class="alert alert-danger" role="alert">
-          {err}
-        </div>
-      {/if}
+      <Error error={err} />
 
       {#if currentRecord && !success}
         <h4 class="mb-3"><span class="text-primary">Bestellung</span></h4>
@@ -121,9 +118,9 @@
                   <span class="text-danger">Bereits bezahlt!</span>
                 {:else}
                   <span class="text-success">
-                    {#if currentRecord.message}
+                    {#if currentRecord.nachricht}
                       {prices[1]}
-                    {:else if !currentRecord.message}
+                    {:else if !currentRecord.nachricht}
                       {prices[0]}
                     {/if}
                   </span>

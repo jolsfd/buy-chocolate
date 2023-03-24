@@ -1,24 +1,30 @@
 <script>
+  import { fly } from "svelte/transition";
   import { pb, cfStore } from "./pocketbase";
   import { Turnstile } from "svelte-turnstile";
   import Select from "./Select.svelte";
   import { prices } from "./prices";
+  import Error from "./Error.svelte";
 
   let bought = false;
-  let details;
+  let responseRecord;
   let err;
 
-  let sender = "";
-  let receiver = "";
-  let schoolclass = "";
-  let nachricht = "";
+  let draft = {
+    absender: "",
+    empfaenger: "",
+    klasse: "",
+    nachricht: "",
+    nummer: -1,
+    bezahlt: false,
+  };
 
   function validate() {
     console.log("Validation ✅");
-    if (receiver == "") {
+    if (draft.empfaenger == "") {
       err = "Empfänger ist erforderlich!";
       return false;
-    } else if (schoolclass == "") {
+    } else if (draft.klasse == "") {
       err = "Klasse ist erforderlich!";
       return false;
     }
@@ -30,27 +36,16 @@
       return;
     }
 
-    const data = {
-      absender: sender,
-      empfaenger: receiver,
-      nachricht: nachricht,
-      klasse: schoolclass,
-      nummer: -1,
-      bezahlt: false,
-    };
+    const record = await pb.collection("chocolate").create(draft);
 
-    const record = await pb
-      .collection("chocolate")
-      .create(data)
+    responseRecord = record;
 
-    details = record;
-
-    if (record.nummer){
+    if (record.nummer) {
       bought = true;
       console.log("Created order 🍫", record);
     } else {
-      human()
-      console.log("No verification from backend 🤖")
+      human();
+      console.log("No verification from backend 🤖");
     }
   }
 
@@ -62,49 +57,54 @@
   async function again() {
     bought = false;
 
-    details = null;
+    responseRecord = null;
 
-    sender = "";
-    receiver = "";
-    schoolclass = "";
-    nachricht = "";
+    draft = {
+      absender: "",
+      empfaenger: "",
+      klasse: "",
+      nachricht: "",
+      nummer: -1,
+      bezahlt: false,
+    };
 
     err = null;
   }
 
   function updateToken(e) {
-    const token = e.detail.token
-    cfStore.update(old => token);
+    const token = e.detail.token;
+    cfStore.update((old) => token);
     console.log("New turnstile token 💾");
   }
-
 </script>
 
 <main>
-  <div class="py-5 text-center">
-    <p class="lead">
-      Below is an example form built entirely with Bootstrap's form controls.
-      Each required form group has a validation state that can be triggered by
-      attempting to submit the form without completing it.
-    </p>
+  <div class="py-5 left col-md-7 lead">
+    <h2 class="py-2">Anleitung</h2>
+      <ol class="list-group list-group-numbered list-group-flush">
+        <li class="list-group-item">Daten für Bestellung in unten stehendes Formular eingeben. Wenn du den Osterhasen anonym bestellen möchtest, dann lasse das Absender Feld frei.🔤</li>
+        <li class="list-group-item">Bestellung mit dem Bestellen Knopf bestätigen. ✅ <b>Die Nummer im nachfolgenden Fenster musst du dir merken❗</b></li>
+        <li class="list-group-item">Die Bezahlung erfolgt entweder vor Ort im Schulhaus oder bei deinem Klassensprecher.💵 🧡 <b>Dafür ist die Nummer zwingend notwendig❗</b></li>
+        <li class="list-group-item">Weiter bestellen🎉</li>
+      </ol>
   </div>
   <div class="row g-5">
     <div class="col-md-5 col-lg-4 order-md-last">
-      <h4 class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="d-flex justify-content-between align-items-left mb-3">
         <span class="text-primary">Preisliste</span>
         <span class="badge bg-primary rounded-pill" />
       </h4>
       <ul class="list-group mb-3">
         <li class="list-group-item d-flex justify-content-between lh-sm">
           <div>
-            <h6 class="my-0">Weihnachtsmann</h6>
+            <h6 class="my-0">Osterhase</h6>
             <small class="text-muted">ohne Nachricht</small>
           </div>
           <span class="text-success">{prices[0]}</span>
         </li>
         <li class="list-group-item d-flex justify-content-between lh-sm">
           <div>
-            <h6 class="my-0">Weichnachtsmann</h6>
+            <h6 class="my-0">Osterhase</h6>
             <small class="text-muted">mit Nachricht</small>
           </div>
           <span class="text-success">{prices[1]}</span>
@@ -112,34 +112,34 @@
       </ul>
     </div>
     {#if bought}
-      <div class="col-md-7 col-lg-8">
+      <div class="col-md-7 col-lg-8" in:fly={{ y: -100, duration: 1000 }}>
         <div class="card" style="mb-3">
           <div class="card-header">
-            <span class="fw-bold">Nummer: {details.nummer}</span>
-            <span class="text-muted">({details.id})</span>
+            <span class="fw-bold">Nummer: {responseRecord.nummer}</span>
+            <span class="text-muted">({responseRecord.id})</span>
           </div>
           <ul class="list-group list-group-flush">
-            {#if details.absender}
+            {#if responseRecord.absender}
               <li class="list-group-item">
                 <span class="text-muted">Absender:</span>
-                {details.absender}
+                {responseRecord.absender}
               </li>
             {/if}
             <li class="list-group-item">
               <span class="text-muted">Empfänger:</span>
-              {details.empfaenger}
+              {responseRecord.empfaenger}
             </li>
             <li class="list-group-item">
               <span class="text-muted">Klasse:</span>
-              {details.klasse}
+              {responseRecord.klasse}
             </li>
-            {#if details.nachricht}
+            {#if responseRecord.nachricht}
               <li class="list-group-item">
                 <span class="text-muted">Nachricht:</span>
-                {details.nachricht}
+                {responseRecord.nachricht}
               </li>
             {/if}
-            {#if details.nachricht}
+            {#if responseRecord.nachricht}
               <li class="list-group-item">
                 <span class="text-muted">Preis:</span>
                 {prices[1]}
@@ -176,11 +176,7 @@
       </div>
     {:else}
       <div class="col-md-7 col-lg-8">
-        {#if err}
-          <div class="alert alert-danger" role="alert">
-            {err}
-          </div>
-        {/if}
+        <Error error={err} />
 
         <h4 class="mb-3"><span class="text-primary">Bestellung</span></h4>
         <form class="needs-validation" novalidate on:submit|preventDefault>
@@ -193,7 +189,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Anonym"
-                bind:value={sender}
+                bind:value={draft.absender}
                 required
               />
             </div>
@@ -204,7 +200,7 @@
                 type="text"
                 class="form-control"
                 placeholder="Empfänger"
-                bind:value={receiver}
+                bind:value={draft.empfaenger}
                 required
               />
             </div>
@@ -218,13 +214,13 @@
                 class="form-control"
                 rows="3"
                 placeholder="Hallo, ..."
-                bind:value={nachricht}
+                bind:value={draft.nachricht}
               />
             </div>
 
             <div class="col-md-5">
               <label for="klasse" class="form-label">Klasse</label>
-              <select class="form-select" bind:value={schoolclass} required>
+              <select class="form-select" bind:value={draft.klasse} required>
                 <Select />
               </select>
             </div>
@@ -239,7 +235,7 @@
             on:turnstile-error={human}
             on:turnstile-expired={human}
           />
-          
+
           <button
             class="w-100 btn btn-success btn-lg"
             type="submit"
@@ -251,3 +247,9 @@
     {/if}
   </div>
 </main>
+
+<style>
+  .left {
+    text-align: left;
+  }
+</style>

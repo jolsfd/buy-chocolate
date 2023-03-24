@@ -1,4 +1,6 @@
 <script>
+  import { fade, fly } from "svelte/transition"
+  import Error from "./Error.svelte";
   import { currentAdmin, pb } from "./pocketbase";
   import Purchase from "./Purchase.svelte";
 
@@ -33,7 +35,7 @@
 <main>
   <div class="d-flex align-items-center justify-content-center">
     {#if $currentAdmin}
-      <div class="col-md-7 col-lg-8">
+      <div class="col-md-7 col-lg-8" in:fly="{{y: -100, duration: 1500}}">
         <div class="py-5 text-center">
           <h3>Welcome back {$currentAdmin.email}!</h3>
 
@@ -65,12 +67,8 @@
       </div>
     {:else}
       <div class="col-md-6 col-lg-7">
-        {#if err}
-          <div class="alert alert-danger" role="alert">
-            {err}
-          </div>
-        {/if}
-        <div class="modal-content rounded-4 shadow">
+        <Error error={err}/>
+        <div class="modal-content rounded-4 shadow" in:fade="{{duration: 1500}}">
           <div class="modal-header p-5 pb-4 border-bottom-0">
             <h1 class="fw-bold mb-0 fs-2">Admin sign in</h1>
           </div>
