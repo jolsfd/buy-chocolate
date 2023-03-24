@@ -229,7 +229,7 @@
           <hr class="my-4" />
 
           <Turnstile
-            siteKey="1x00000000000000000000AA"
+            siteKey={import.meta.env.VITE_SITE_KEY}
             action="order"
             on:turnstile-callback={updateToken}
             on:turnstile-error={human}

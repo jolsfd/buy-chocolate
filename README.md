@@ -31,7 +31,7 @@ Or if you want to use docker instead:
 ```
 cd ./frontend
 docker build . -t vite
-docker run -t vite
+docker run -d -t vite
 
 # get the container name
 docker ps --all
@@ -50,7 +50,7 @@ docker build . -t pocketbase
 And to run it in production:
 
 ```
-docker run -d -p 127.0.0.1:8090:8090 -v /var/buy-chocolate:/pocketbase/pb_data pocketbase
+docker run -d -p 127.0.0.1:8090:8090 -v /var/buy-chocolate:/pocketbase/pb_data p -t pocketbase
 ```
 
 Finally start the reverse proxy with caddy-server:
