@@ -39,6 +39,7 @@ docker cp CONTAINER_NAME:/vite/dist ./dist
 
 docker stop CONTAINER_NAME
 docker rm CONTAINER_NAME
+docker image rm vite
 ```
 
 To build the docker image:
@@ -79,3 +80,10 @@ sudo systemctl restart caddy
 ## Partial shutdown
 
 To block create requests change to api rule in the admin dashboard to "Block everything"
+
+
+## Data backup
+
+```bash
+scp <remote_username>@<IPorHost>:/var/buy-chocolate   /home/USER/backup/
+```
