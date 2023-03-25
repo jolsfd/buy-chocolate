@@ -40,6 +40,10 @@ docker cp CONTAINER_NAME:/vite/dist ./dist
 docker stop CONTAINER_NAME
 docker rm CONTAINER_NAME
 docker image rm vite
+
+# to rebuild frontend make sure you use
+rm -rf ./dist
+
 ```
 
 To build the docker image:
