@@ -7,6 +7,7 @@
   import Error from "./Error.svelte";
 
   let bought = false;
+  let loading = false;
   let responseRecord;
   let err;
 
@@ -32,6 +33,8 @@
   }
 
   async function createOrder() {
+    loading = true
+
     if (!validate()) {
       return;
     }
@@ -47,6 +50,8 @@
       human();
       console.log("No verification from backend 🤖");
     }
+
+    loading = false
   }
 
   async function human() {
@@ -173,6 +178,11 @@
             />
           </svg></button
         >
+      </div>
+    {:else if loading}
+      <div class="col-md-7 col-lg-8">
+        <div class="spinner-border text-dark" role="status">
+        </div>
       </div>
     {:else}
       <div class="col-md-7 col-lg-8">
